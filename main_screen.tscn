@@ -1,0 +1,153 @@
+[gd_scene load_steps=7 format=3 uid="uid://bowcmg0ug3rke"]
+
+[ext_resource type="Script" path="res://main_screen.gd" id="1_o2sch"]
+[ext_resource type="Script" path="res://victory_dialog.gd" id="2_pprm1"]
+[ext_resource type="Script" path="res://change_size_popup.gd" id="3_7vyeh"]
+[ext_resource type="Script" path="res://change_type_popup.gd" id="4_eg35c"]
+[ext_resource type="Script" path="res://number_display.gd" id="5_5l6ej"]
+[ext_resource type="Script" path="res://timer.gd" id="6_uu3fa"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_o2sch")
+
+[node name="InterfaseContainer" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+offset_right = 491.0
+offset_bottom = 62.0
+size_flags_horizontal = 3
+size_flags_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VictoryDialog" type="AcceptDialog" parent="InterfaseContainer"]
+unique_name_in_owner = true
+handle_input_locally = false
+title = "Victory!"
+transient = false
+unresizable = true
+borderless = true
+always_on_top = true
+script = ExtResource("2_pprm1")
+
+[node name="ChangeSizePopup" type="PopupMenu" parent="InterfaseContainer"]
+unique_name_in_owner = true
+allow_search = false
+item_count = 3
+item_0/text = "Small"
+item_0/checkable = 1
+item_0/id = 0
+item_1/text = "Medium"
+item_1/checkable = 1
+item_1/id = 1
+item_2/text = "Large"
+item_2/checkable = 1
+item_2/id = 2
+script = ExtResource("3_7vyeh")
+
+[node name="ChangeTypePopup" type="PopupMenu" parent="InterfaseContainer"]
+unique_name_in_owner = true
+size = Vector2i(168, 62)
+allow_search = false
+item_count = 2
+item_0/text = "Square Grid"
+item_0/checkable = 1
+item_0/id = 0
+item_1/text = "Hexagonal Grid"
+item_1/checkable = 1
+item_1/id = 1
+script = ExtResource("4_eg35c")
+
+[node name="Rows" type="VBoxContainer" parent="InterfaseContainer"]
+unique_name_in_owner = true
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 481.0
+offset_bottom = 52.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 10
+
+[node name="Board" type="HBoxContainer" parent="InterfaseContainer/Rows"]
+unique_name_in_owner = true
+offset_right = 471.0
+offset_bottom = 32.0
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="MineCounter" type="Label" parent="InterfaseContainer/Rows/Board"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 0)
+offset_right = 60.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 17
+text = "000"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("5_5l6ej")
+
+[node name="ResetButton" type="Button" parent="InterfaseContainer/Rows/Board"]
+unique_name_in_owner = true
+offset_left = 70.0
+offset_right = 168.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 17
+shortcut_in_tooltip = false
+text = "New Game"
+
+[node name="ChangeSizeButton" type="Button" parent="InterfaseContainer/Rows/Board"]
+unique_name_in_owner = true
+offset_left = 178.0
+offset_right = 284.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 17
+text = "Change Size"
+
+[node name="ChangeTypeButton" type="Button" parent="InterfaseContainer/Rows/Board"]
+unique_name_in_owner = true
+offset_left = 294.0
+offset_right = 401.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+mouse_filter = 1
+text = "Change Type"
+
+[node name="TimeElapsed" type="Label" parent="InterfaseContainer/Rows/Board"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 0)
+offset_left = 411.0
+offset_right = 471.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 17
+text = "000"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("5_5l6ej")
+
+[node name="Timer" type="Timer" parent="InterfaseContainer/Rows/Board/TimeElapsed"]
+script = ExtResource("6_uu3fa")
+
+[node name="SquareGridContainer" type="CenterContainer" parent="InterfaseContainer/Rows"]
+unique_name_in_owner = true
+offset_top = 42.0
+offset_right = 471.0
+offset_bottom = 42.0
+size_flags_vertical = 3
+
+[connection signal="id_pressed" from="InterfaseContainer/ChangeSizePopup" to="." method="_on_change_size_popup_id_pressed"]
+[connection signal="id_pressed" from="InterfaseContainer/ChangeTypePopup" to="." method="_on_change_type_popup_id_pressed"]
+[connection signal="pressed" from="InterfaseContainer/Rows/Board/ResetButton" to="." method="reload_scene"]
+[connection signal="pressed" from="InterfaseContainer/Rows/Board/ChangeSizeButton" to="." method="show_change_size_popup"]
+[connection signal="pressed" from="InterfaseContainer/Rows/Board/ChangeTypeButton" to="." method="show_change_type_popup"]
+[connection signal="timeout" from="InterfaseContainer/Rows/Board/TimeElapsed/Timer" to="InterfaseContainer/Rows/Board/TimeElapsed/Timer" method="_on_timer_timeout"]

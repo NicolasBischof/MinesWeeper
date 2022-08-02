@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://csgtoolwu0ufl"]
+
+[ext_resource type="Texture2D" uid="uid://bgf2wycshag1c" path="res://assets/img/mines.png" id="1_rdjc7"]
+[ext_resource type="Script" path="res://mine_grid_hexagonal.gd" id="2_7s67t"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v2oun"]
+texture = ExtResource("1_rdjc7")
+separation = Vector2i(3, 0)
+texture_region_size = Vector2i(33, 33)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_kg0uf"]
+tile_shape = 3
+tile_size = Vector2i(33, 33)
+sources/0 = SubResource("TileSetAtlasSource_v2oun")
+
+[node name="HexagonalTile" type="TileMap"]
+tile_set = SubResource("TileSet_kg0uf")
+cell_quadrant_size = 33
+format = 2
+script = ExtResource("2_7s67t")
